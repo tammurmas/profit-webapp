@@ -5,10 +5,10 @@ Provided customer usernames have to be unique. To check the validity of data a c
 
 To run from command line clone and execute:
 
-Jetty(mvn clean install jetty:run) - address: localhost:80/profit-webapp/customer
+Jetty(mvn jetty:run) - address: localhost:8080
+
+JBoss(mvn wildfly:run) - address: localhost:8080/profit-webapp
 
 Tomcat(mvn clean install tomcat7:run) - address: localhost:8080/profit-webapp/customer
-
-JBoss(mvn clean install jboss-as:run) - address: localhost:8080/profit-webapp/customer
 
 H2 in-memory database is used to store data, meaning all the data is going to be discarded on server restart.

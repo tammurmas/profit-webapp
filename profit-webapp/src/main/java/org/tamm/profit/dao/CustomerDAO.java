@@ -5,10 +5,10 @@ import java.util.List;
 import org.tamm.profit.model.Customer;
 
 public interface CustomerDAO {
-	public void addCustomer(Customer customer);
-	public void updateCustomer(Customer customer);
-	public List<Customer> listCustomers();
-	public Customer getCustomerById(int id);
-	public Customer getCustomerByUsername(String username);
-	public void removeCustomer(int id);
+	void addCustomer(Customer customer);
+	void updateCustomer(Customer customer);
+	List<Customer> listCustomers();
+	Customer getCustomerById(int id);
+	Customer getCustomerByUsername(String username);
+	void removeCustomer(int id);
 }

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Customer Form</title>
+
+    <style>
+        .tg {
+            border-collapse: collapse;
+            border-spacing: 0;
+            border-color: #ccc;
+        }
+        .tg td {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            padding: 10px 5px;
+            border-style: solid;
+            border-width: 1px;
+            overflow: hidden;
+            word-break: normal;
+            border-color: #ccc;
+            color: #333;
+            background-color: #fff;
+        }
+        .tg th {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            font-weight: normal;
+            padding: 10px 5px;
+            border-style: solid;
+            border-width: 1px;
+            overflow: hidden;
+            word-break: normal;
+            border-color: #ccc;
+            color: #333;
+            background-color: #f0f0f0;
+        }
+        .tg .tg-4eph {
+            background-color: #f9f9f9
+        }
+        .tb {
+            border-collapse: collapse;
+            border-spacing: 10px;
+            border-color: #ccc;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+        }
+        .error {
+            color: red
+        }
+    </style>
+
+</head>
+<body>
+    <h2>Customer Information</h2>
+    <form method="POST" th:action="@{/customer/add}" th:object="${customer}">
+        <table class="tb">
+            <tr>
+                <td><label for="firstname">First name</label></td>
+                <td><input type="text" class="form-control" id="firstname" placeholder="" th:field="*{firstname}"></td>
+                <td><span th:if="${#fields.hasErrors('firstname')}" th:errorclass="error" th:errors="*{firstname}"></span></td>
+            </tr>
+            <tr>
+                <td><label for="lastname">Lastname</label></td>
+                <td><input type="text" id="lastname" th:field="*{lastname}"></td>
+                <td><span th:if="${#fields.hasErrors('lastname')}" th:errorclass="error" th:errors="*{lastname}"></span></td>
+            </tr>
+            <tr>
+                <td><label for="dateOfBirth">Date of birth</label></td>
+                <td><input type="date" id="dateOfBirth" placeholder="yyyy-MM-dd" th:field="*{dateOfBirth}"></td>
+                <td><span th:if="${#fields.hasErrors('dateOfBirth')}" th:errorclass="error" th:errors="*{dateOfBirth}"></span></td>
+            </tr>
+            <tr>
+                <td><label for="username">Username</label></td>
+                <td><input type="text" id="username" th:field="*{username}"></td>
+                <td><span th:if="${#fields.hasErrors('username')}" th:errorclass="error" th:errors="*{username}"></span></td>
+            </tr>
+            <tr>
+                <td><label for="password">Password</label></td>
+                <td><input type="password" id="password" th:field="*{password}"></td>
+                <td><span th:if="${#fields.hasErrors('password')}" th:errorclass="error" th:errors="*{password}"></span></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="submit" value="Create Customer" />
+                </td>
+            </tr>
+        </table>
+    </form>
+
+
+    <table class="tg" th:if="${customers.size() > 0}">
+        <tr>
+            <th scope="col">#</th>
+            <th>Firstname</th>
+            <th>Lastname</th>
+            <th>Date of birth</th>
+            <th>Username</th>
+            <th>Update</th>
+            <th>Delete</th>
+        </tr>
+        <tr th:each="customer, iStat : ${customers}">
+            <td th:text="${iStat.count}"></td>
+            <td th:text="${customer.firstname}"></td>
+            <td th:text="${customer.lastname}"></td>
+            <td th:text="${customer.dateOfBirth}"></td>
+            <td th:text="${customer.username}"></td>
+            <td><a th:href="@{/customer/edit/{id}(id=${customer.id})}">Update</a></td>
+            <td>
+                <form th:action="@{/customer/remove}" th:object="${customer}" method="post">
+                    <input type="hidden" name="id" th:value="${customer.id}">
+                    <button type="submit">Delete</button>
+                </form>
+        </tr>
+    </table>
+
+</body>
+</html>

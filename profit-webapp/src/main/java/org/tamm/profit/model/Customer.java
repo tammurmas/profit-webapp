@@ -1,6 +1,6 @@
 package org.tamm.profit.model;
 
-import org.hibernate.validator.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 
 public class Customer {
 	private int id;

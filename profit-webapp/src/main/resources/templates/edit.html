@@ -1,0 +1,84 @@
+<html lang="en">
+<head>
+    <title>Customer Form</title>
+
+    <style>
+        .tg {
+            border-collapse: collapse;
+            border-spacing: 0;
+            border-color: #ccc;
+        }
+        .tg td {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            padding: 10px 5px;
+            border-style: solid;
+            border-width: 1px;
+            overflow: hidden;
+            word-break: normal;
+            border-color: #ccc;
+            color: #333;
+            background-color: #fff;
+        }
+        .tg th {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            font-weight: normal;
+            padding: 10px 5px;
+            border-style: solid;
+            border-width: 1px;
+            overflow: hidden;
+            word-break: normal;
+            border-color: #ccc;
+            color: #333;
+            background-color: #f0f0f0;
+        }
+        .tg .tg-4eph {
+            background-color: #f9f9f9
+        }
+        .error {
+            color: red
+        }
+    </style>
+
+</head>
+<body>
+
+    <h2>Customer Information</h2>
+    <form method="POST" th:object="${customer}" action="/customer/update">
+        <input type="hidden" th:field="*{id}" />
+        <table>
+            <tr>
+                <td><label for="firstname">Firstname</label></td>
+                <td><input type="text" id="firstname" th:field="*{firstname}"></td>
+                <td><span th:if="${#fields.hasErrors('firstname')}" th:errorclass="error" th:errors="*{firstname}"></span></td>
+            </tr>
+            <tr>
+                <td><label for="lastname">Lastname</label></td>
+                <td><input type="text" id="lastname" th:field="*{lastname}"></td>
+                <td><span th:if="${#fields.hasErrors('lastname')}" th:errorclass="error" th:errors="*{lastname}"></span></td>
+            </tr>
+            <tr>
+                <td><label for="dateOfBirth">Date of birth</label></td>
+                <td><input type="date" id="dateOfBirth" placeholder="yyyy-MM-dd" th:field="*{dateOfBirth}"></td>
+                <td><span th:if="${#fields.hasErrors('dateOfBirth')}" th:errorclass="error" th:errors="*{dateOfBirth}"></span></td>
+            </tr>
+            <tr>
+                <td><label for="username">Username</label></td>
+                <td><input type="text" id="username" th:field="*{username}"></td>
+                <td><span th:if="${#fields.hasErrors('username')}" th:errorclass="error" th:errors="*{username}"></span></td>
+            </tr>
+            <tr>
+                <td><label for="password">Password</label></td>
+                <td><input id="password" type="password" th:field="*{password}"></td>
+                <td><span th:if="${#fields.hasErrors('password')}" th:errorclass="error" th:errors="*{password}"></span></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="submit" value="Update Customer" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>
