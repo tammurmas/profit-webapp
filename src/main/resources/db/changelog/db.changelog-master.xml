@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+
+    <changeSet id="1" author="Urmas Tamm">
+        <comment>Create customer table</comment>
+        <createTable tableName="customer">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="customer_id_pk" />
+            </column>
+            <column name="firstname" type="varchar(100)" >
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="lastname" type="varchar(100)" >
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="birth_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="username" type="varchar(100)" >
+                <constraints unique="true" nullable="false" uniqueConstraintName="ux_auth_user_username"/>
+            </column>
+            <column name="password" type="varchar(100)" >
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

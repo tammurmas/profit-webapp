@@ -1,78 +1,43 @@
 package org.tamm.profit.model;
 
-import jakarta.validation.constraints.NotBlank;
+import java.util.Date;
 
+import lombok.Getter;
+import lombok.Setter;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
+@Getter
+@Setter
 public class Customer {
-	private int id;
-	
-	@NotBlank(message = "Firstname left blank!")
-	private String firstname;
-	
-	@NotBlank(message = "Lastname left blank!")
-	private String lastname; 
-	
-	private String dateOfBirth;
-	
-	@NotBlank(message = "Username left blank!")
-	private String username;
-	
-	@NotBlank(message = "Password left blank!")
-	private String password;
-	
-	public Customer(){}
 
-	public int getId() {
-		return id;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	public void setId(int id) {
-		this.id = id;
-	}
-	
-	public String getFirstname() {
-		return firstname;
-	}
+    @Column(name = "firstname", nullable = false, length = 100)
+    private String firstname;
 
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
-	}
+    @Column(name = "lastname", nullable = false, length = 100)
+    private String lastname;
 
-	public String getLastname() {
-		return lastname;
-	}
+    @Column(name = "birth_date", nullable = false)
+    private Date birthDate;
 
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
-	}
+    @Column(name = "username", nullable = false, length = 100)
+    private String username;
 
-	public String getDateOfBirth() {
-		return dateOfBirth;
-	}
+    @Column(name = "password", nullable = false, length = 100)
+    private String password;
 
-	public void setDateOfBirth(String dateOfBirth) {
-		this.dateOfBirth = dateOfBirth;
-	}
+    @Override
+    public String toString() {
+        return firstname + "; " + lastname + "; " + birthDate + "; " + username;
+    }
 
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	
-	@Override
-	public String toString()
-	{
-		return firstname+"; "+lastname+"; "+dateOfBirth+"; "+username;
-	}
-	
 }

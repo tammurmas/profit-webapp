@@ -65,9 +65,9 @@
                 <td><span th:if="${#fields.hasErrors('lastname')}" th:errorclass="error" th:errors="*{lastname}"></span></td>
             </tr>
             <tr>
-                <td><label for="dateOfBirth">Date of birth</label></td>
-                <td><input type="date" id="dateOfBirth" placeholder="yyyy-MM-dd" th:field="*{dateOfBirth}"></td>
-                <td><span th:if="${#fields.hasErrors('dateOfBirth')}" th:errorclass="error" th:errors="*{dateOfBirth}"></span></td>
+                <td><label for="birthDate">Date of birth</label></td>
+                <td><input type="date" id="birthDate" placeholder="yyyy-MM-dd" th:field="*{birthDate}"></td>
+                <td><span th:if="${#fields.hasErrors('birthDate')}" th:errorclass="error" th:errors="*{birthDate}"></span></td>
             </tr>
             <tr>
                 <td><label for="username">Username</label></td>
@@ -87,8 +87,9 @@
         </table>
     </form>
 
+    <br/>
 
-    <table class="tg" th:if="${customers.size() > 0}">
+    <table class="tg">
         <tr>
             <th scope="col">#</th>
             <th>Firstname</th>
@@ -102,7 +103,7 @@
             <td th:text="${iStat.count}"></td>
             <td th:text="${customer.firstname}"></td>
             <td th:text="${customer.lastname}"></td>
-            <td th:text="${customer.dateOfBirth}"></td>
+            <td th:text="${customer.birthDate}"></td>
             <td th:text="${customer.username}"></td>
             <td><a th:href="@{/customer/edit/{id}(id=${customer.id})}">Update</a></td>
             <td>

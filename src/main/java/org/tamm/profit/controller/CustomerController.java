@@ -1,49 +1,49 @@
 package org.tamm.profit.controller;
 
+import java.text.ParseException;
+import java.util.Optional;
+
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.tamm.profit.dao.CustomerDAO;
-import org.tamm.profit.dao.CustomerDAOImpl;
 import org.tamm.profit.model.Customer;
-import org.tamm.profit.model.FormValidator;
+import org.tamm.profit.service.CustomerService;
+import org.tamm.profit.service.dto.CustomerDto;
 
 import jakarta.validation.Valid;
 
 @Slf4j
 @Controller
+@RequiredArgsConstructor
 @RequestMapping(value = "/customer")
 public class CustomerController {
 
-    @GetMapping()
-    public String customer(Model model) {
-        model.addAttribute("customer", new Customer());
+    private final CustomerService customerService;
 
-        CustomerDAO dao = CustomerDAOImpl.getDbCon();
-        model.addAttribute("customers", dao.listCustomers());
+    @GetMapping()
+    public String list(Model model) {
+        model.addAttribute("customer", new CustomerDto());
+        model.addAttribute("customers", customerService.findAllCustomers());
         return "customer";
     }
 
     @PostMapping(value = "/add")
-    public String addCustomer(@Valid @ModelAttribute("customer") Customer customer, BindingResult result, ModelMap model) {
-
-        FormValidator formValidator = new FormValidator();
-        formValidator.validate(customer, result);
-
+    public String addCustomer(@Valid @ModelAttribute("customer") CustomerDto customer, BindingResult result, Model model) {
+        validate(customer, result);
         if (result.hasErrors()) {
             return "customer";
         }
-
-        CustomerDAO dao = CustomerDAOImpl.getDbCon();
-        dao.addCustomer(customer);
+        customerService.save(customer);
 
         return "redirect:/customer";
     }
@@ -51,28 +51,44 @@ public class CustomerController {
     @PostMapping("/remove")
     public String removeCustomer(@ModelAttribute("customer") Customer customer) {
         log.info("Removing customer with id={}", customer.getId());
-        CustomerDAOImpl.getDbCon().removeCustomer(customer.getId());
+        customerService.delete(customer.getId());
         return "redirect:/customer";
     }
 
     @GetMapping("/edit/{id}")
     public String editCustomer(@PathVariable("id") int id, Model model) {
-        model.addAttribute("customer", CustomerDAOImpl.getDbCon().getCustomerById(id));
+        model.addAttribute("customer", customerService.findById(id));
         return "edit";
     }
 
     @PostMapping(value = "/update")
-    public String updateCustomer(@Valid @ModelAttribute("customer") Customer customer, BindingResult result, ModelMap model) {
-
-        FormValidator formValidator = new FormValidator();//TODO: create some custom validator for altering username
-        formValidator.validate(customer, result);
-
+    public String updateCustomer(@Valid @ModelAttribute("customer") CustomerDto customer, BindingResult result, ModelMap model) {
+        validate(customer, result);
         if (result.hasErrors()) {
             return "edit";
         }
-
-        CustomerDAOImpl.getDbCon().updateCustomer(customer);
+        customerService.save(customer);
 
         return "redirect:/customer";
+    }
+
+    private void validate(CustomerDto customer, Errors errors) {
+        if (customer.getBirthDate() == null) {
+            errors.rejectValue("birthDate", "", "Date of birth left blank!");
+        } else {
+            try {
+                CustomerService.DATE_FORMAT.parse(customer.getBirthDate());
+            } catch (ParseException e) {
+                errors.rejectValue("birthDate", "", "Date of birth not valid!");
+            }
+        }
+
+        Optional<CustomerDto> optionalCustomer = customerService.findByUsername(customer.getUsername());
+        if (optionalCustomer.isPresent()) {
+            boolean sameCustomer = (customer.getId().equals(optionalCustomer.get().getId()));
+            if (!sameCustomer) {
+                errors.rejectValue("username", "Username already in use!", "Username already in use!");
+            }
+        }
     }
 }
