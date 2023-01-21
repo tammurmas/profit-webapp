@@ -109,7 +109,7 @@
             <td>
                 <form th:action="@{/customer/remove}" th:object="${customer}" method="post">
                     <input type="hidden" name="id" th:value="${customer.id}">
-                    <button type="submit">Delete</button>
+                    <button type="submit" onclick="return confirm('Do you really want to delete customer?');">Delete</button>
                 </form>
         </tr>
     </table>

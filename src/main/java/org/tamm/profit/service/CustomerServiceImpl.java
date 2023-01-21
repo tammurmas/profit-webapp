@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import org.tamm.profit.service.dto.CustomerDto;
 
 import jakarta.transaction.Transactional;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -47,6 +49,7 @@ public class CustomerServiceImpl implements CustomerService {
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
             customer.setPassword(encoder.encode(dto.getPassword()));
             customerRepository.save(customer);
+            log.info("Saved customer={}", customer);
         } catch (ParseException e) {
             throw new RuntimeException("Failed to save customer=[" + customer.getId() + "], invalid date value=[" + dto.getBirthDate() + "]", e);
         }
@@ -55,6 +58,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public void delete(long id) {
         customerRepository.deleteById(id);
+        log.info("Deleted customer with id={}", id);
     }
 
     @Override

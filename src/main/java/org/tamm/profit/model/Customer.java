@@ -5,6 +5,8 @@ import java.util.Date;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.tamm.profit.service.CustomerService;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -37,7 +39,12 @@ public class Customer {
 
     @Override
     public String toString() {
-        return firstname + "; " + lastname + "; " + birthDate + "; " + username;
+        return "Customer{" +
+                "id=" + id +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", birthDate=" + CustomerService.DATE_FORMAT.format(birthDate) +
+                ", username='" + username + '\'' +
+                '}';
     }
-
 }

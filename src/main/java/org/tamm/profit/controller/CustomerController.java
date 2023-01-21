@@ -50,7 +50,6 @@ public class CustomerController {
 
     @PostMapping("/remove")
     public String removeCustomer(@ModelAttribute("customer") Customer customer) {
-        log.info("Removing customer with id={}", customer.getId());
         customerService.delete(customer.getId());
         return "redirect:/customer";
     }
